@@ -15,20 +15,6 @@ enum class MotorDirection {
         }
     }
 
-    /**
-     * Construct a new MotorDirection from it's motor power coefficient
-     * @throws InvalidMotorDirectionPowerCoefficientException
-     */
-    fun fromPowerCoefficient(power: Double): MotorDirection {
-        return when (power) {
-            1.0 -> FORWARD
-            -1.0 -> REVERSE
-            else -> {
-                throw InvalidMotorDirectionPowerCoefficientException(power)
-            }
-        }
-    }
-
 
     /**
      * Get the display string of the given MotorDirection
@@ -37,6 +23,20 @@ enum class MotorDirection {
         return when (this) {
             FORWARD -> "forward"
             REVERSE -> "reverse"
+        }
+    }
+}
+
+/**
+ * Construct a new MotorDirection from its motor power coefficient
+ * @throws InvalidMotorDirectionPowerCoefficientException
+ */
+fun fromPowerCoefficient(power: Double): MotorDirection {
+    return when (power) {
+        1.0 -> MotorDirection.FORWARD
+        -1.0 -> MotorDirection.REVERSE
+        else -> {
+            throw InvalidMotorDirectionPowerCoefficientException(power)
         }
     }
 }
