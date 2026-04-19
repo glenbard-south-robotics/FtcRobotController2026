@@ -18,10 +18,10 @@ import org.junit.Test
 import org.mockito.kotlin.mock
 
 class RobotModuleTests {
-    private inner class TestModule(
+    private class TestModule(
         context: RobotModuleContext,
         config: RobotModuleConfiguration,
-    ) : RobotModule(context, config) {
+    ) : RobotModule<RobotModuleConfiguration>(context, config) {
         var initializeCalled = false
         var pollInputsCalled = false
         var shutdownCalled = false
