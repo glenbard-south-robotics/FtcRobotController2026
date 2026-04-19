@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.config
 
 import org.firstinspires.ftc.teamcode.exceptions.ModuleValidationException
+import org.firstinspires.ftc.teamcode.modules.ModuleCommands
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -9,17 +10,23 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ModuleConfigurationTests {
-    private val emptyConfig = object : ModuleConfiguration {
+    private val emptyConfig = object : RobotModuleConfiguration {
         override val debugTelemetry = false
-        override val binaryBindings: Map<Commands, BinaryBinding> = emptyMap()
+        override val binaryBindings: Map<ModuleCommands, BinaryBinding> = emptyMap()
         override val analogBindings: Map<AnalogAction, AnalogBinding> = emptyMap()
     }
 
-    private val populatedConfig = object : ModuleConfiguration {
+    private val populatedConfig = object : RobotModuleConfiguration {
         override val debugTelemetry = true
-        override val binaryBindings: Map<Commands, BinaryBinding> = mapOf(
-            Commands.INTAKE_FORWARD to BinaryBinding(GamepadID.GAMEPAD_ONE, BinaryAction.CROSS),
-            Commands.INTAKE_REVERSE to BinaryBinding(GamepadID.GAMEPAD_ONE, BinaryAction.CIRCLE),
+        override val binaryBindings: Map<ModuleCommands, BinaryBinding> = mapOf(
+            ModuleCommands.INTAKE_FORWARD to BinaryBinding(
+                GamepadID.GAMEPAD_ONE,
+                BinaryAction.CROSS
+            ),
+            ModuleCommands.INTAKE_REVERSE to BinaryBinding(
+                GamepadID.GAMEPAD_ONE,
+                BinaryAction.CIRCLE
+            ),
         )
         override val analogBindings: Map<AnalogAction, AnalogBinding> = mapOf(
             AnalogAction.LEFT_STICK_X to AnalogBinding(
@@ -28,17 +35,17 @@ class ModuleConfigurationTests {
         )
     }
 
-    private fun configWithBinaryBindings(vararg pairs: Pair<Commands, BinaryBinding>) =
-        object : ModuleConfiguration {
+    private fun configWithBinaryBindings(vararg pairs: Pair<ModuleCommands, BinaryBinding>) =
+        object : RobotModuleConfiguration {
             override val debugTelemetry = false
-            override val binaryBindings: Map<Commands, BinaryBinding> = mapOf(*pairs)
+            override val binaryBindings: Map<ModuleCommands, BinaryBinding> = mapOf(*pairs)
             override val analogBindings: Map<AnalogAction, AnalogBinding> = emptyMap()
         }
 
     private fun configWithAnalogBindings(vararg pairs: Pair<AnalogAction, AnalogBinding>) =
-        object : ModuleConfiguration {
+        object : RobotModuleConfiguration {
             override val debugTelemetry = false
-            override val binaryBindings: Map<Commands, BinaryBinding> = emptyMap()
+            override val binaryBindings: Map<ModuleCommands, BinaryBinding> = emptyMap()
             override val analogBindings: Map<AnalogAction, AnalogBinding> = mapOf(*pairs)
         }
 
@@ -61,13 +68,13 @@ class ModuleConfigurationTests {
     fun `binaryBindings returns correct binding for command`() {
         assertEquals(
             BinaryBinding(GamepadID.GAMEPAD_ONE, BinaryAction.CROSS),
-            populatedConfig.binaryBindings[Commands.INTAKE_FORWARD]
+            populatedConfig.binaryBindings[ModuleCommands.INTAKE_FORWARD]
         )
     }
 
     @Test
     fun `binaryBindings returns null for unbound command`() {
-        assertNull(populatedConfig.binaryBindings[Commands.FLYWHEEL_TOGGLE])
+        assertNull(populatedConfig.binaryBindings[ModuleCommands.FLYWHEEL_TOGGLE])
     }
 
     @Test
@@ -102,8 +109,14 @@ class ModuleConfigurationTests {
     @Test
     fun `validate throws on duplicate binary bindings`() {
         val config = configWithBinaryBindings(
-            Commands.INTAKE_FORWARD to BinaryBinding(GamepadID.GAMEPAD_ONE, BinaryAction.CROSS),
-            Commands.INTAKE_REVERSE to BinaryBinding(GamepadID.GAMEPAD_ONE, BinaryAction.CROSS),
+            ModuleCommands.INTAKE_FORWARD to BinaryBinding(
+                GamepadID.GAMEPAD_ONE,
+                BinaryAction.CROSS
+            ),
+            ModuleCommands.INTAKE_REVERSE to BinaryBinding(
+                GamepadID.GAMEPAD_ONE,
+                BinaryAction.CROSS
+            ),
         )
         assertThrows(ModuleValidationException::class.java) { config.validate() }
     }
@@ -111,8 +124,14 @@ class ModuleConfigurationTests {
     @Test
     fun `validate throws on duplicate binary bindings across gamepads with same button`() {
         val config = configWithBinaryBindings(
-            Commands.INTAKE_FORWARD to BinaryBinding(GamepadID.GAMEPAD_ONE, BinaryAction.CROSS),
-            Commands.INTAKE_REVERSE to BinaryBinding(GamepadID.GAMEPAD_TWO, BinaryAction.CROSS),
+            ModuleCommands.INTAKE_FORWARD to BinaryBinding(
+                GamepadID.GAMEPAD_ONE,
+                BinaryAction.CROSS
+            ),
+            ModuleCommands.INTAKE_REVERSE to BinaryBinding(
+                GamepadID.GAMEPAD_TWO,
+                BinaryAction.CROSS
+            ),
         )
 
         config.validate()

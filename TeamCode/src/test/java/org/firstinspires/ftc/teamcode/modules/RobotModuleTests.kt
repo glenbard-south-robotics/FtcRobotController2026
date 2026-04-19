@@ -4,13 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.config.AnalogAction
 import org.firstinspires.ftc.teamcode.config.AnalogBinding
 import org.firstinspires.ftc.teamcode.config.BinaryBinding
-import org.firstinspires.ftc.teamcode.config.Commands
 import org.firstinspires.ftc.teamcode.config.GamepadID
-import org.firstinspires.ftc.teamcode.config.ModuleConfiguration
-import org.firstinspires.ftc.teamcode.state.BindingManager
+import org.firstinspires.ftc.teamcode.config.RobotModuleConfiguration
 import org.firstinspires.ftc.teamcode.state.GamepadPair
-import org.firstinspires.ftc.teamcode.state.HardwareManager
-import org.firstinspires.ftc.teamcode.state.ModuleContext
+import org.firstinspires.ftc.teamcode.state.RobotModuleContext
+import org.firstinspires.ftc.teamcode.state.managers.BindingManager
+import org.firstinspires.ftc.teamcode.state.managers.HardwareManager
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -20,8 +19,8 @@ import org.mockito.kotlin.mock
 
 class RobotModuleTests {
     private inner class TestModule(
-        context: ModuleContext,
-        config: ModuleConfiguration,
+        context: RobotModuleContext,
+        config: RobotModuleConfiguration,
     ) : RobotModule(context, config) {
         var initializeCalled = false
         var pollInputsCalled = false
@@ -43,24 +42,24 @@ class RobotModuleTests {
     }
 
     private lateinit var opMode: LinearOpMode
-    private lateinit var context: ModuleContext
-    private lateinit var config: ModuleConfiguration
+    private lateinit var context: RobotModuleContext
+    private lateinit var config: RobotModuleConfiguration
     private lateinit var module: TestModule
 
     @Before
     fun setUp() {
         opMode = mock()
 
-        context = ModuleContext(
+        context = RobotModuleContext(
             opMode = mock(),
             bindingManager = BindingManager(GamepadPair(mock(), mock())),
             hardwareManager = HardwareManager(mock()),
             telemetry = mock(),
         )
 
-        config = object : ModuleConfiguration {
+        config = object : RobotModuleConfiguration {
             override val debugTelemetry = false
-            override val binaryBindings = emptyMap<Commands, BinaryBinding>()
+            override val binaryBindings = emptyMap<ModuleCommands, BinaryBinding>()
             override val analogBindings = emptyMap<AnalogAction, AnalogBinding>()
         }
 
@@ -97,17 +96,17 @@ class RobotModuleTests {
 
     @Test
     fun `readBinary returns false for unbound command`() {
-        assertFalse(module.readBinary(Commands.INTAKE_FORWARD))
+        assertFalse(module.readBinary(ModuleCommands.INTAKE_FORWARD))
     }
 
     @Test
     fun `readBinaryPressed returns false for unbound command`() {
-        assertFalse(module.readBinaryPressed(Commands.INTAKE_FORWARD))
+        assertFalse(module.readBinaryPressed(ModuleCommands.INTAKE_FORWARD))
     }
 
     @Test
     fun `readBinaryReleased returns false for unbound command`() {
-        assertFalse(module.readBinaryReleased(Commands.INTAKE_FORWARD))
+        assertFalse(module.readBinaryReleased(ModuleCommands.INTAKE_FORWARD))
     }
 
     @Test
@@ -117,9 +116,9 @@ class RobotModuleTests {
 
     @Test
     fun `readAnalog returns zero for bound action with no input`() {
-        val configWithBinding = object : ModuleConfiguration {
+        val configWithBinding = object : RobotModuleConfiguration {
             override val debugTelemetry = false
-            override val binaryBindings = emptyMap<Commands, BinaryBinding>()
+            override val binaryBindings = emptyMap<ModuleCommands, BinaryBinding>()
             override val analogBindings = mapOf(
                 AnalogAction.LEFT_STICK_X to AnalogBinding(
                     GamepadID.GAMEPAD_ONE,
@@ -136,9 +135,9 @@ class RobotModuleTests {
 
     @Test
     fun `emitDebugTelemetry runs when debugTelemetry is true`() {
-        val debugConfig = object : ModuleConfiguration {
+        val debugConfig = object : RobotModuleConfiguration {
             override val debugTelemetry = true
-            override val binaryBindings = emptyMap<Commands, BinaryBinding>()
+            override val binaryBindings = emptyMap<ModuleCommands, BinaryBinding>()
             override val analogBindings = emptyMap<AnalogAction, AnalogBinding>()
         }
         val debugModule = TestModule(context, debugConfig)

@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.config
+package org.firstinspires.ftc.teamcode.modules
 
 /**
  * All commands used by the robot
  */
-enum class Commands {
+enum class ModuleCommands {
     INTAKE_FORWARD,
     INTAKE_REVERSE,
     INTAKE_SLOW_TOGGLE,

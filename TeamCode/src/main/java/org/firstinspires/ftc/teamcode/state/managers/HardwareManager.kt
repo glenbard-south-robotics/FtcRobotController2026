@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.state
+package org.firstinspires.ftc.teamcode.state.managers
 
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.exceptions.HardwareMissingException
@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.exceptions.HardwareMissingException
 class HardwareManager(val hardwareMap: HardwareMap) {
     /**
      * Attempt to get hardware by ID
-     * @throws HardwareMissingException if the hardware is not found
+     * @throws org.firstinspires.ftc.teamcode.exceptions.HardwareMissingException if the hardware is not found
      */
     inline fun <reified T> getHardware(hardwareID: String): Result<T> {
         return try {

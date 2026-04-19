@@ -1,13 +1,14 @@
-package org.firstinspires.ftc.teamcode.state
+package org.firstinspires.ftc.teamcode.state.managers
 
 import org.firstinspires.ftc.teamcode.config.AnalogAction
 import org.firstinspires.ftc.teamcode.config.AnalogBinding
 import org.firstinspires.ftc.teamcode.config.BinaryAction
 import org.firstinspires.ftc.teamcode.config.BinaryBinding
-import org.firstinspires.ftc.teamcode.config.Commands
 import org.firstinspires.ftc.teamcode.config.GamepadID
-import org.firstinspires.ftc.teamcode.config.ModuleConfiguration
+import org.firstinspires.ftc.teamcode.config.RobotModuleConfiguration
 import org.firstinspires.ftc.teamcode.exceptions.InvalidRumbleDurationException
+import org.firstinspires.ftc.teamcode.modules.ModuleCommands
+import org.firstinspires.ftc.teamcode.state.GamepadPair
 import kotlin.math.abs
 import kotlin.time.Duration
 
@@ -119,28 +120,28 @@ data class BindingManager(val gamepadPair: GamepadPair) {
 }
 
 fun AnalogAction.read(
-    bindingManager: BindingManager, config: ModuleConfiguration
+    bindingManager: BindingManager, config: RobotModuleConfiguration
 ): Float {
     val binding = config.analogBindings[this] ?: return 0f
     return bindingManager.readAnalog(binding)
 }
 
-fun Commands.read(
-    bindingManager: BindingManager, config: ModuleConfiguration
+fun ModuleCommands.read(
+    bindingManager: BindingManager, config: RobotModuleConfiguration
 ): Boolean {
     val binding = config.binaryBindings[this] ?: return false
     return bindingManager.readBinary(binding)
 }
 
-fun Commands.wasPressed(
-    inputManager: BindingManager, config: ModuleConfiguration
+fun ModuleCommands.wasPressed(
+    inputManager: BindingManager, config: RobotModuleConfiguration
 ): Boolean {
     val binding = config.binaryBindings[this] ?: return false
     return inputManager.binaryWasPressed(binding)
 }
 
-fun Commands.wasReleased(
-    inputManager: BindingManager, config: ModuleConfiguration
+fun ModuleCommands.wasReleased(
+    inputManager: BindingManager, config: RobotModuleConfiguration
 ): Boolean {
     val binding = config.binaryBindings[this] ?: return false
     return inputManager.binaryWasReleased(binding)

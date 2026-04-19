@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.config
 
 import org.firstinspires.ftc.teamcode.exceptions.ModuleValidationException
+import org.firstinspires.ftc.teamcode.modules.ModuleCommands
 
-interface ModuleConfiguration {
+
+interface RobotModuleConfiguration {
     val debugTelemetry: Boolean
 
-    val binaryBindings: Map<Commands, BinaryBinding>
+    val binaryBindings: Map<ModuleCommands, BinaryBinding>
     val analogBindings: Map<AnalogAction, AnalogBinding>
 
     /**
