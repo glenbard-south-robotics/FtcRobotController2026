@@ -1,14 +1,13 @@
 package org.firstinspires.ftc.teamcode.state
 
-import org.firstinspires.ftc.teamcode.commands.Commands
 import org.firstinspires.ftc.teamcode.config.AnalogAction
 import org.firstinspires.ftc.teamcode.config.AnalogBinding
 import org.firstinspires.ftc.teamcode.config.BinaryAction
 import org.firstinspires.ftc.teamcode.config.BinaryBinding
+import org.firstinspires.ftc.teamcode.config.Commands
 import org.firstinspires.ftc.teamcode.config.GamepadID
 import org.firstinspires.ftc.teamcode.config.ModuleConfiguration
 import org.firstinspires.ftc.teamcode.exceptions.InvalidRumbleDurationException
-
 import kotlin.math.abs
 import kotlin.time.Duration
 

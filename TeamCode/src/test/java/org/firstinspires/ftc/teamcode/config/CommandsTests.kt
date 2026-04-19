@@ -1,13 +1,13 @@
-package org.firstinspires.ftc.teamcode.commands
+package org.firstinspires.ftc.teamcode.config
 
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Test
 
 class CommandsTests {
 
     @Test
     fun commandsSize() {
-        assertEquals(6, Commands.entries.size)
+        Assert.assertEquals(6, Commands.entries.size)
     }
 
     @Test
@@ -20,6 +20,6 @@ class CommandsTests {
             Commands.FLYWHEEL_TOGGLE_SLOW_MODE,
             Commands.BASE_SLOW_TOGGLE,
         )
-        assertEquals(expected, Commands.entries.toSet())
+        Assert.assertEquals(expected, Commands.entries.toSet())
     }
 }

@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.config
 
-import org.firstinspires.ftc.teamcode.commands.Commands
 import org.firstinspires.ftc.teamcode.exceptions.ModuleValidationException
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ModuleConfigurationTests {
@@ -19,21 +22,25 @@ class ModuleConfigurationTests {
             Commands.INTAKE_REVERSE to BinaryBinding(GamepadID.GAMEPAD_ONE, BinaryAction.CIRCLE),
         )
         override val analogBindings: Map<AnalogAction, AnalogBinding> = mapOf(
-            AnalogAction.LEFT_STICK_X to AnalogBinding(GamepadID.GAMEPAD_ONE, AnalogAction.LEFT_STICK_X, deadZone = 0.1f, scale = 1.0f),
+            AnalogAction.LEFT_STICK_X to AnalogBinding(
+                GamepadID.GAMEPAD_ONE, AnalogAction.LEFT_STICK_X, deadZone = 0.1f, scale = 1.0f
+            ),
         )
     }
 
-    private fun configWithBinaryBindings(vararg pairs: Pair<Commands, BinaryBinding>) = object : ModuleConfiguration {
-        override val debugTelemetry = false
-        override val binaryBindings: Map<Commands, BinaryBinding> = mapOf(*pairs)
-        override val analogBindings: Map<AnalogAction, AnalogBinding> = emptyMap()
-    }
+    private fun configWithBinaryBindings(vararg pairs: Pair<Commands, BinaryBinding>) =
+        object : ModuleConfiguration {
+            override val debugTelemetry = false
+            override val binaryBindings: Map<Commands, BinaryBinding> = mapOf(*pairs)
+            override val analogBindings: Map<AnalogAction, AnalogBinding> = emptyMap()
+        }
 
-    private fun configWithAnalogBindings(vararg pairs: Pair<AnalogAction, AnalogBinding>) = object : ModuleConfiguration {
-        override val debugTelemetry = false
-        override val binaryBindings: Map<Commands, BinaryBinding> = emptyMap()
-        override val analogBindings: Map<AnalogAction, AnalogBinding> = mapOf(*pairs)
-    }
+    private fun configWithAnalogBindings(vararg pairs: Pair<AnalogAction, AnalogBinding>) =
+        object : ModuleConfiguration {
+            override val debugTelemetry = false
+            override val binaryBindings: Map<Commands, BinaryBinding> = emptyMap()
+            override val analogBindings: Map<AnalogAction, AnalogBinding> = mapOf(*pairs)
+        }
 
     @Test
     fun `debugTelemetry can be false`() {
@@ -71,8 +78,9 @@ class ModuleConfigurationTests {
     @Test
     fun `analogBindings returns correct binding for action`() {
         assertEquals(
-            AnalogBinding(GamepadID.GAMEPAD_ONE, AnalogAction.LEFT_STICK_X, deadZone = 0.1f, scale = 1.0f),
-            populatedConfig.analogBindings[AnalogAction.LEFT_STICK_X]
+            AnalogBinding(
+                GamepadID.GAMEPAD_ONE, AnalogAction.LEFT_STICK_X, deadZone = 0.1f, scale = 1.0f
+            ), populatedConfig.analogBindings[AnalogAction.LEFT_STICK_X]
         )
     }
 
@@ -123,8 +131,12 @@ class ModuleConfigurationTests {
     @Test
     fun `validate throws on duplicate analog bindings`() {
         val config = configWithAnalogBindings(
-            AnalogAction.LEFT_STICK_X to AnalogBinding(GamepadID.GAMEPAD_ONE, AnalogAction.LEFT_STICK_X),
-            AnalogAction.RIGHT_STICK_X to AnalogBinding(GamepadID.GAMEPAD_ONE, AnalogAction.LEFT_STICK_X),
+            AnalogAction.LEFT_STICK_X to AnalogBinding(
+                GamepadID.GAMEPAD_ONE, AnalogAction.LEFT_STICK_X
+            ),
+            AnalogAction.RIGHT_STICK_X to AnalogBinding(
+                GamepadID.GAMEPAD_ONE, AnalogAction.LEFT_STICK_X
+            ),
         )
         assertThrows(ModuleValidationException::class.java) { config.validate() }
     }
@@ -132,11 +144,14 @@ class ModuleConfigurationTests {
     @Test
     fun `validate throws on duplicate analog bindings across gamepads with same action`() {
         val config = configWithAnalogBindings(
-            AnalogAction.LEFT_STICK_X to AnalogBinding(GamepadID.GAMEPAD_ONE, AnalogAction.LEFT_STICK_X),
-            AnalogAction.RIGHT_STICK_X to AnalogBinding(GamepadID.GAMEPAD_TWO, AnalogAction.LEFT_STICK_X),
+            AnalogAction.LEFT_STICK_X to AnalogBinding(
+                GamepadID.GAMEPAD_ONE, AnalogAction.LEFT_STICK_X
+            ),
+            AnalogAction.RIGHT_STICK_X to AnalogBinding(
+                GamepadID.GAMEPAD_TWO, AnalogAction.LEFT_STICK_X
+            ),
         )
 
         config.validate()
     }
-
 }

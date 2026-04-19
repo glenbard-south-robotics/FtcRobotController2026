@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.config
 
-import org.firstinspires.ftc.teamcode.commands.Commands
 import org.firstinspires.ftc.teamcode.exceptions.ModuleValidationException
 
 interface ModuleConfiguration {
@@ -20,7 +19,7 @@ interface ModuleConfiguration {
         }
 
         val analogValues = analogBindings.values.toList()
-        if(analogValues.size != analogValues.toSet().size) {
+        if (analogValues.size != analogValues.toSet().size) {
             throw ModuleValidationException("Duplicate analog bindings in ${this::class.simpleName}")
         }
     }
