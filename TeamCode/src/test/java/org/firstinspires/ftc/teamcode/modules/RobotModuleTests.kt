@@ -134,4 +134,16 @@ class RobotModuleTests {
         assertEquals(0f, moduleWithBinding.readAnalog(AnalogAction.LEFT_STICK_X))
     }
 
+    @Test
+    fun `emitDebugTelemetry runs when debugTelemetry is true`() {
+        val debugConfig = object : ModuleConfiguration {
+            override val debugTelemetry = true
+            override val binaryBindings = emptyMap<Commands, BinaryBinding>()
+            override val analogBindings = emptyMap<AnalogAction, AnalogBinding>()
+        }
+        val debugModule = TestModule(context, debugConfig)
+
+        // Should not throw even with no annotated methods on TestModule
+        debugModule.emitDebugTelemetry()
+    }
 }

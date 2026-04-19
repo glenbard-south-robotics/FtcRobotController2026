@@ -4,6 +4,8 @@ import org.firstinspires.ftc.teamcode.config.AnalogAction
 import org.firstinspires.ftc.teamcode.config.Commands
 import org.firstinspires.ftc.teamcode.config.ModuleConfiguration
 import org.firstinspires.ftc.teamcode.state.ModuleContext
+import org.firstinspires.ftc.teamcode.state.TelemetryManager
+import org.firstinspires.ftc.teamcode.state.addDebug
 import org.firstinspires.ftc.teamcode.state.read
 import org.firstinspires.ftc.teamcode.state.wasPressed
 import org.firstinspires.ftc.teamcode.state.wasReleased
@@ -46,6 +48,6 @@ abstract class RobotModule(
     fun emitDebugTelemetry() {
         if (!config.debugTelemetry) return
 
-        // TODO: Hook up runtime-annotations
+        TelemetryManager(context.telemetry, this, groupPrefix = this::class.simpleName).addDebug()
     }
 }
