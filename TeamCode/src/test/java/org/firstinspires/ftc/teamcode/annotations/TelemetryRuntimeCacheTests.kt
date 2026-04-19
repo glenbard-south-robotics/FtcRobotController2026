@@ -7,6 +7,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
+@Suppress("unused")
 class TelemetryReflectionCacheTests {
     private class NoAnnotations {
         val unannotatedField: String = "hello"
@@ -97,14 +98,14 @@ class TelemetryReflectionCacheTests {
     fun `debugFields returns field with correct annotation group`() {
         val fields = TelemetryReflectionCache.debugFields(WithAnnotations::class.java)
         val annotation = fields.first().getAnnotation(TelemetryDebug::class.java)
-        assertEquals("Test", annotation.group)
+        assertEquals("Test", annotation?.group)
     }
 
     @Test
     fun `debugFields uses default group when none specified`() {
         val fields = TelemetryReflectionCache.debugFields(WithDefaultGroup::class.java)
         val annotation = fields.first().getAnnotation(TelemetryDebug::class.java)
-        assertEquals("default", annotation.group)
+        assertEquals("default", annotation?.group)
     }
 
     @Test
@@ -160,14 +161,14 @@ class TelemetryReflectionCacheTests {
     fun `debugMethods returns method with correct annotation group`() {
         val methods = TelemetryReflectionCache.debugMethods(WithAnnotations::class.java)
         val annotation = methods.first().getAnnotation(TelemetryDebug::class.java)
-        assertEquals("Test", annotation.group)
+        assertEquals("Test", annotation?.group)
     }
 
     @Test
     fun `debugMethods uses default group when none specified`() {
         val methods = TelemetryReflectionCache.debugMethods(WithDefaultGroup::class.java)
         val annotation = methods.first().getAnnotation(TelemetryDebug::class.java)
-        assertEquals("default", annotation.group)
+        assertEquals("default", annotation?.group)
     }
 
     @Test
