@@ -1,12 +1,10 @@
-package org.firstinspires.ftc.teamcode.state
+package org.firstinspires.ftc.teamcode.state.managers
 
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.teamcode.exceptions.HardwareMissingException
-import org.firstinspires.ftc.teamcode.state.managers.HardwareManager
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.mock
@@ -29,8 +27,8 @@ class HardwareManagerTests {
 
         val result = hardwareManager.getHardware<DcMotor>("leftDrive")
 
-        assertTrue(result.isSuccess)
-        assertEquals(motor, result.getOrNull())
+        Assert.assertTrue(result.isSuccess)
+        Assert.assertEquals(motor, result.getOrNull())
     }
 
     @Test
@@ -39,8 +37,8 @@ class HardwareManagerTests {
 
         val result = hardwareManager.getHardware<DcMotor>("leftDrive")
 
-        assertTrue(result.isFailure)
-        assertTrue(result.exceptionOrNull() is HardwareMissingException)
+        Assert.assertTrue(result.isFailure)
+        Assert.assertTrue(result.exceptionOrNull() is HardwareMissingException)
     }
 
     @Test
@@ -50,7 +48,7 @@ class HardwareManagerTests {
         val result = hardwareManager.getHardware<DcMotor>("leftDrive")
         val exception = result.exceptionOrNull() as HardwareMissingException
 
-        assertTrue(exception.message?.contains("leftDrive") ?: false)
+        Assert.assertTrue(exception.message?.contains("leftDrive") ?: false)
     }
 
     @Test
@@ -60,7 +58,7 @@ class HardwareManagerTests {
 
         val result = hardwareManager.getHardware<DcMotor>("leftDrive")
 
-        assertTrue(result.isFailure)
+        Assert.assertTrue(result.isFailure)
     }
 
     @Test
@@ -70,7 +68,7 @@ class HardwareManagerTests {
 
         val result = hardwareManager.getHardware<Servo>("claw")
 
-        assertTrue(result.isSuccess)
-        assertEquals(servo, result.getOrNull())
+        Assert.assertTrue(result.isSuccess)
+        Assert.assertEquals(servo, result.getOrNull())
     }
 }

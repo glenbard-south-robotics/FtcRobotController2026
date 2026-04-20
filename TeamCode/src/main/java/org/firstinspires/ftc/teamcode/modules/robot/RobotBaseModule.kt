@@ -2,9 +2,8 @@ package org.firstinspires.ftc.teamcode.modules.robot
 
 import com.pedropathing.ivy.Command
 import com.pedropathing.ivy.Scheduler
-import com.pedropathing.ivy.commands.Commands.instant
-import com.pedropathing.ivy.commands.Commands.waitMs
-import com.pedropathing.ivy.groups.Groups.race
+import com.pedropathing.ivy.commands.Commands
+import com.pedropathing.ivy.groups.Groups
 
 import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.annotations.TelemetryDebug
@@ -43,11 +42,11 @@ class RobotBaseModule(context: RobotModuleContext) : RobotModule<RobotBaseModule
 
     override fun shutdown(): Result<Unit> {
         Scheduler.reset()
-        setMotorPowers(0.0, 0.0)
+        stop()
         return Result.success(Unit)
     }
 
-    fun setMotorPowers(leftPower: Double, rightPower: Double): Command = instant {
+    fun setMotorPowers(leftPower: Double, rightPower: Double): Command = Commands.instant {
         val leftCoefficient = config.leftMotorDirection.getPowerCoefficient()
         val rightCoefficient = config.rightMotorDirection.getPowerCoefficient()
 
@@ -81,13 +80,12 @@ class RobotBaseModule(context: RobotModuleContext) : RobotModule<RobotBaseModule
             }
             .setDone { !leftDrive.isBusy && !rightDrive.isBusy }
             .setEnd {
-                leftDrive.power = 0.0
-                rightDrive.power = 0.0
+                stop()
                 leftDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
                 rightDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
             }
 
-        return race(drive, waitMs(timeoutMs))
+        return Groups.race(drive, Commands.waitMs(timeoutMs))
     }
 
     fun drivePower(
@@ -114,13 +112,12 @@ class RobotBaseModule(context: RobotModuleContext) : RobotModule<RobotBaseModule
             }
             .setDone { !leftDrive.isBusy && !rightDrive.isBusy }
             .setEnd {
-                leftDrive.power = 0.0
-                rightDrive.power = 0.0
+                stop()
                 leftDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
                 rightDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
             }
 
-        return race(drive, waitMs(timeoutMs))
+        return Groups.race(drive, Commands.waitMs(timeoutMs))
     }
 
     override fun pollInputs() {
